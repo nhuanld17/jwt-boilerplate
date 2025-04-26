@@ -99,6 +99,8 @@ public class AuthService {
         refreshTokenRepository.save(tokenEntity);
 
         return AuthResponse.builder()
+                .username(user.getUsername())
+                .roles(user.getRoles())
                 .token(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -124,6 +126,8 @@ public class AuthService {
         String newAccessToken = jwtService.generateAccessToken(user);
 
         return AuthResponse.builder()
+                .username(user.getUsername())
+                .roles(user.getRoles())
                 .token(newAccessToken)
                 .refreshToken(refreshToken)
                 .build();
