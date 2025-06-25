@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,16 +67,11 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(username, password);
 
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
-                            request.getPassword()
-                    )
-            );
+            Authentication authenticatedToken = authenticationManager.authenticate(authenticationToken);
 
             // Đưa Authentication vào SecurityContext và gán SecurityContext vào
             // SecurityContextHolder
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticatedToken);
 
         } catch (BadCredentialsException e) {
             log.error("Error in login api: {}", e.getMessage());
